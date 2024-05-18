@@ -4,6 +4,6 @@ namespace LaravelCustomizableApiResource;
 
 use Illuminate\Http\Request;
 
-interface CustomizableApiResource {
-    public function BasicArray(Request $request): array;
+interface Customizable {
+    public function BasicResource(Request $request): array;
 }

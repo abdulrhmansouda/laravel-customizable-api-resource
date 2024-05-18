@@ -3,20 +3,42 @@
 namespace LaravelCustomizableApiResource;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-trait CustomizableApiResource {
-    private $with = [
-        'BasicArray',
+trait CustomizableApiResource
+{
+    public array $withSubResource = [
     ];
 
-    final public function toArray(Request $request): array
+    /**
+     * Dynamically pass method calls to the underlying resource.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
     {
-       $resourceContent = [];
+        $method = Str::camel((str_replace('with', '', $method)));
 
-       foreach($this->with as $element){
-        $resourceContent .= $element;
-       }
+        if (method_exists($this, $method)) {
+            $this->withSubResource[$method] = $parameters;
+            return $this;
+        }
 
-       return $resourceContent;
+        return parent::__call($method, $parameters);
+    }
+
+    public function toArray(Request $request): array
+    {
+        $resourceContent = $this->basicResource($request);
+
+        foreach ($this->withSubResource as $method => $parameters) {
+            if (method_exists($this, $method)) {
+                $resourceContent = array_merge($resourceContent, $this->{$method}($parameters));
+            }
+        }
+
+        return $resourceContent;
     }
 }
