@@ -1,0 +1,24 @@
+{
+    "name": "abdulrhmansouda/laravel-customizable-api-resource",
+    "description": "This package help Laravel developers customize api resources.",
+    "type": "library",
+    "require-dev": {
+        "orchestra/testbench": "^9.0"
+    },
+    "license": "mit",
+    "autoload": {
+        "psr-4": {
+            "LaravelCustomizableApiResource\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Abdul Rahman Souda",
+            "email": "eng.abdul.rahman19992@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/support": "*"
+    }
+}
