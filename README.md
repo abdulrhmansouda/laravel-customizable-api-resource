@@ -44,6 +44,7 @@ class TestResource extends JsonResource implements Customizable
     {
         return [
             'ownerName'     => $this->owner_name,
+            'user'          => UserResource::make($this->whenLoaded('user')),
         ];
     }
 
@@ -63,7 +64,7 @@ In your routes, you can use the `customMake` and `customCollection` methods to c
 
 ```php
 Route::get('test', function () {
-    $ad = Ad::first();
+    $ad = Ad::with('user')->first();
 
     return TestResource::customMake($ad, [
         'secretSubResource',
@@ -73,6 +74,21 @@ Route::get('test', function () {
     ]);
 });
 
+```
+
+This is output:
+```json
+{
+    "data": {
+            "id": 1,
+            "name": "name",
+            "ownerName": "ownerName",
+            "user": {
+                "id": 2,
+                "name": "ahmend"
+            }
+        }
+}
 ```
 
 Deal with collection:
@@ -85,6 +101,24 @@ Route::get('test', function () {
         'secretSubResource',
     ]);
 });
+```
+
+This is output:
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "name",
+            "ownerName": "ownerName"
+        },
+        {
+            "id": 1,
+            "name": "name",
+            "ownerName": "ownerName"
+        }
+    ]
+}
 ```
 
 You can make as much function as you prefer. Addtionally you can change the name of `secretSubResource` and `someDetails`.
