@@ -33,7 +33,7 @@ trait CustomizableApiResource
         foreach (static::$withSubResources as $method => $parameters) {
             if (method_exists($this, $method)) {
                 $resourceContent = array_merge($resourceContent, $this->{$method}($parameters));
-            }elseif(method_exists($this, $parameters)){
+            } elseif (method_exists($this, $parameters)) {
                 $method = $parameters;
                 $resourceContent = array_merge($resourceContent, $this->{$method}());
             }
@@ -42,14 +42,14 @@ trait CustomizableApiResource
         return $resourceContent;
     }
 
-    public static function customMake($resource, $withSubResources)
+    public static function customMake($resource, $withSubResources = [])
     {
         static::$withSubResources = array_merge(static::$withSubResources, $withSubResources);
 
         return parent::make($resource);
     }
 
-    public static function customCollection($resource, $withSubResources)
+    public static function customCollection($resource, $withSubResources = [])
     {
         static::$withSubResources = array_merge(static::$withSubResources, $withSubResources);
 
